@@ -5,7 +5,7 @@
 
     <h3>listing details</h3>
     </div>
-    <div class="card col-6 offset-2" >
+    <div class="card col-6 offset-2 listing-card" >
         <img src="<%=list.image.url%>" class="card-img-top show-img" alt="listing_image">
         <div class="card-body">
         <p class="card-text"><b><%=list.title%></b>
@@ -30,7 +30,51 @@
        </div>
        <div class="col-1 offset-2 ">
         <a href="/listings/<%=list._id%>/edit" class="btn btn-dark  btns">Edit</a>
+        
 
     </div>
+    <hr>
+   
+        <div class="col-8 offset-2">
+            <h4>Review</h4>
+            <form action="/listings/<%=list._id%>/reviews" method="post" novalidate class="needs-validation">
+                <div class="mb-3 mt-3">
+                    <label for="comment" class="form-label">Comments</label>
+                <textarea type="text" class="form-control" name="reviews[comment]" cols="30" rows="5" required></textarea>
+                
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="Rating" class="form-label">Ratings</label>
+                <input type="range" min="1" max="5" class="form-control form-range" name="reviews[rating]" required>
+                
+                </div>
+                <button class="btn btn-dark btns">Add Review</button>
+
+            </form>
+            <p><b>All Reviews</b></p>
+         <div class="row">
+            <%  for(review of list.reviews)
+              {%>
+                  <div class="card col-6 mb-3">
+                      <div class="card-body">
+                          <h5 class="card-title">its me</h5>
+                          <p class="card-text"><%=review.comment%></p>
+                          <p class="card-text"><%=review.rating%></p>
+          
+                      </div>
+                  </div>
+                  <form action="<%=list._id%>/reviews/<%=review._id%>?_method=DELETE" method="post">
+                    <button class="btn btn-dark btns">Delete</button>
+                  </form>
+              
+  
+  
+  
+              <%}%>
+            </div>
+
+
+        </div>
+        
     
 </body>
