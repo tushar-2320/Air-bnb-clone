@@ -8,8 +8,10 @@ const listing=require("../models/listings.js");
 const ValidateListing=(req,res,next)=>
     {
      let result=listingSchema.validate(req.body);
+    // console.log(req.body);
      if(result.error)
         {
+           // console.log(result.error);
             throw new ExpressError(400,result.error);
         }
       else
@@ -53,9 +55,11 @@ router.post('/',ValidateListing,wrapasync (async (req,res,next)=>{
     
     let  listin=req.body.listin;
     const newlist=new listing(listin);
+    console.log(newlist);
     await newlist.save();
-     console.log(listin);
-     res.redirect("/listings");
+    console.log(listin);
+    req.flash("success","new listing created");
+    res.redirect("/listings");
 
  }));
  module.exports=router;

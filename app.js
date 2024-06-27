@@ -9,6 +9,9 @@ const ejsMate=require('ejs-mate');
 const ExpressError=require("./utils/expresserror.js");
 const listingsroutes=require("./routes/listings.js");
 const reviewroutes=require("./routes/review.js");
+const session=require("express-session");
+const flash=require("connect-flash");
+
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));
@@ -24,17 +27,27 @@ async function main()
 {
    await mongoose.connect(MONGO_URL);
 }
+const sessionOptions={
+   secret:"secretkey",
+   resave:false,
+   saveUninitialized:true
+}
+app.get("/",(req,res)=>{
+   console.log("enter the get request");
+   res.send("i am app.js");
 
-   
+});
+app.use(session(sessionOptions));
+app.use(flash());
+app.use((req,res,next)=>{
+res.locals.success=req.flash("success");
+next();
+});
 app.use("/listings",listingsroutes);
 app.use("/listings/:id/reviews",reviewroutes);
     
 
-app.get("/",(req,res)=>{
-    console.log("enter the get request");
-    res.send("i am app.js");
 
-});
 
  
  app.all("*",(req,res,next)=>{
