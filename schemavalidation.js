@@ -16,7 +16,7 @@ const listingSchema=joi.object( {
         }).required()
 
     });
-    console.log(listingSchema);
+   // console.log(listingSchema);
     module.exports=listingSchema;
     const reviewSchema=joi.object({
         review:joi.object({
