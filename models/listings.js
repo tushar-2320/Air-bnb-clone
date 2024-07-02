@@ -33,7 +33,11 @@ const listing_schema=new Schema
             type:Schema.Types.ObjectId,
             ref:"review",
         }
-    ]
+    ],
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"user",
+    }
 
 });
 const listing=mongoose.model("listing",listing_schema);
