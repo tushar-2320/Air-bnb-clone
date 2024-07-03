@@ -8,14 +8,11 @@ const listing=require("../models/listings.js");
 const{ValidateListing}=require("../middleware.js");
 const {isLoggedIn,isOwner}=require("../middleware.js");
 
-    
-router.get('/',wrapasync(listController.index));
+router.route("/").get(wrapasync(listController.index)).post(isLoggedIn,ValidateListing,wrapasync (listController.newList));
 router.get('/new' ,isLoggedIn,listController.renderNewForm);
+router.route('/:id').put(ValidateListing,isLoggedIn,isOwner,listController.updateForm).get(listController.renderShowForm);
 router.get('/:id/edit',isOwner,isLoggedIn,listController.renderEditForm);
-router.put('/:id',ValidateListing,isLoggedIn,isOwner,listController.updateForm);
-router.get('/:id',listController.renderShowForm);
-router.post('/',isLoggedIn,ValidateListing,wrapasync (listController.newList));
- module.exports=router;
+module.exports=router;
  
  
 
