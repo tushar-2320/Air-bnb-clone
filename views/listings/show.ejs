@@ -52,11 +52,29 @@
                 <textarea type="text" class="form-control" name="reviews[comment]" cols="30" rows="5" required></textarea>
                 
                 </div>
-                <div class="mb-3 mt-3">
+                <!-- <div class="mb-3 mt-3">
                     <label for="Rating" class="form-label">Ratings</label>
                 <input type="range" min="1" max="5" class="form-control form-range" name="reviews[rating]" required>
                 
-                </div>
+                </div> -->
+                
+                <div class="mb-3 mt-3">
+                    <label for="Rating" class="form-label">Ratings</label>
+                <fieldset class="starability-slot">
+                    <!-- <legend>First rating:</legend> -->
+                    <input type="radio" id="no-rate" class="input-no-rate" name="reviews[rating]" value="1" checked aria-label="No rating." />
+                    <input type="radio" id="first-rate1" name="reviews[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="reviews[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="reviews[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="reviews[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="reviews[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                  </fieldset>
+                  </div>
                 <button class="btn btn-dark btns">Add Review</button>
 
             </form>
@@ -67,9 +85,10 @@
               {%>
                   <div class="card col-6 mb-3">
                       <div class="card-body">
-                          <h5 class="card-title"><%=review.author.username%></h5>
+                          <h5 class="card-title"><%=review.Author.username%></h5>
                           <p class="card-text"><%=review.comment%></p>
-                          <p class="card-text"><%=review.rating%></p>
+                          <p class="starability-result card-text" data-rating="<%=review.rating%>">
+                          </p>
           
                       </div>
                   </div>

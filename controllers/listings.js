@@ -23,7 +23,7 @@ module.exports.updateForm=async (req,res)=>{
 }
 module.exports.renderShowForm=async (req,res)=>{
     let {id} =req.params;
-    const list=await listing.findById(id).populate({path:"reviews",populate:{path:"author"}}).populate("owner");
+    const list=await listing.findById(id).populate({path:"reviews",populate:{path:"Author"}}).populate("owner");
     res.render("./listings/show.ejs",{list}); 
 }
 module.exports.newList=async (req,res,next)=>{
