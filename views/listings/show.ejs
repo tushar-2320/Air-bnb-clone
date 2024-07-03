@@ -1,4 +1,7 @@
 <% layout("/layout/boilerplate.ejs") -%>
+
+<%=success%>
+<%=error%>
 <body>
     <div class="row">
         <div class="col-8 offset-2">
@@ -28,15 +31,19 @@
         <li><%=list.country%></li>
     </ul>
     <br><br> -->
-    
+    <%if(currUser&&currUser._id.equals(list.owner._id))
+    {%>
        </div>
        <div class="col-1 offset-2 ">
         <a href="/listings/<%=list._id%>/edit" class="btn btn-dark  btns">Edit</a>
         
 
     </div>
+<%}%>
     <hr>
    
+   <% if(currUser)
+   {%>
         <div class="col-8 offset-2">
             <h4>Review</h4>
             <form action="/listings/<%=list._id%>/reviews" method="post" novalidate class="needs-validation">
@@ -53,13 +60,14 @@
                 <button class="btn btn-dark btns">Add Review</button>
 
             </form>
+        <%}%>
             <p><b>All Reviews</b></p>
          <div class="row">
             <%  for(review of list.reviews)
               {%>
                   <div class="card col-6 mb-3">
                       <div class="card-body">
-                          <h5 class="card-title">its me</h5>
+                          <h5 class="card-title"><%=review.author.username%></h5>
                           <p class="card-text"><%=review.comment%></p>
                           <p class="card-text"><%=review.rating%></p>
           
