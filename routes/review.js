@@ -7,6 +7,6 @@ const {Validatereview,isLoggedIn,isAuthor}=require("../middleware.js");
 const listing=require("../models/listings.js");
 const ReviewController=require("../controllers/review.js");
 
-    router.post('/',isLoggedIn,Validatereview,wrapasync(ReviewController.AddReviews));
+    router.post('/',isLoggedIn,wrapasync(ReviewController.AddReviews));
     router.delete('/:rid',isLoggedIn,isAuthor,wrapasync(ReviewController.DeleteReviews));
     module.exports=router;

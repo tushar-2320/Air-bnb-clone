@@ -1,8 +1,12 @@
+if(process.env.NODE_ENV !="production")
+   {
+      require("dotenv").config();
+   }
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
 const port=3000;
-const MONGO_URL="mongodb://127.0.0.1:27017/air_bnb";
+//const MONGO_URL="mongodb://127.0.0.1:27017/air_bnb";
 const methodOverride=require("method-override");
 const path=require('path');
 const ejsMate=require('ejs-mate');
@@ -10,6 +14,7 @@ const ExpressError=require("./utils/expresserror.js");
 const listingsroutes=require("./routes/listings.js");
 const reviewroutes=require("./routes/review.js");
 const session=require("express-session");
+const Mongo_store=require("connect-mongo");
 const flash=require("connect-flash");
 const User=require("./models/user.js");
 const LocalStrategy=require("passport-local");
@@ -23,19 +28,30 @@ app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,'/public')));
 app.engine("ejs",ejsMate);
-
+let UL=process.env.MONGO_URL
 main().then(()=>{console.log("connected to db");
 
 }).catch((err)=>{console.log(err);})
+
 async function main()
 {
-   await mongoose.connect(MONGO_URL);
+   await mongoose.connect(UL);
 }
+const store=Mongo_store.create({
+   mongoUrl:UL,
+   crypto:{
+      secret:"secretkey",
+   },
+   touchAfter:24*3600,
+
+});
 const sessionOptions={
+   store:store,
    secret:"secretkey",
    resave:false,
    saveUninitialized:true
 }
+
 app.get("/",(req,res)=>{
    console.log("enter the get request");
    res.send("i am app.js");
@@ -62,11 +78,13 @@ app.use("/",userRoutes);
 
 
  
- app.all("*",(req,res,next)=>{
+ app.all("*",(req,res,next)=>
+   {
     next(new ExpressError(404,"Page Not found"));
 
  });
- app.use((err,req,res,next)=>{ 
+ app.use((err,req,res,next)=>
+   { 
     let {statuscode=500,message="something went wrong"}=err;
    // res.status(statuscode).send(message);
    res.render("error.ejs",{err})
